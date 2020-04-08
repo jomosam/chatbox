@@ -1,0 +1,27 @@
+{
+  "name": "chatbox",
+  "version": "1.0.0",
+  "description": "Its a simple chatbox app developed using node,express,mongodb,html",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jomosam/chatbox.git"
+  },
+  "author": "Jomon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jomosam/chatbox/issues"
+  },
+  "homepage": "https://github.com/jomosam/chatbox#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mongodb": "^3.5.5",
+    "nodemon": "^2.0.2",
+    "socket.io": "^2.3.0"
+  }
+}
