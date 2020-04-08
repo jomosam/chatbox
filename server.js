@@ -11,7 +11,7 @@ var io              =   require('socket.io')(http);
 
 
 http.listen(process.env.PORT || 80,()=>{
-    console.log('Server Started jj....');
+    console.log('Server Started....');
 })
 
 app.get('/',(req,res)=>{
