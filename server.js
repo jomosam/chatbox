@@ -8,15 +8,9 @@ let app             =   express();
 var http            =   require('http').Server(app);
 var io              =   require('socket.io')(http);
 
-/**
- * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
- * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
- */
-const uri           =   "mongodb+srv://<username>:<password>@<your-cluster-url>/test?retryWrites=true&w=majority";
-const client        =   new MongoClient(uri);
-//await client.connect();
 
-http.listen(3001,()=>{
+
+http.listen(process.env.PORT || 80,()=>{
     console.log('Server Started jj....');
 })
 
