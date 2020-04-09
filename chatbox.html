@@ -3,11 +3,22 @@
   <head>
     <title>Messenger</title>
     <style>
-      form input { padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      form input {
+        padding: 1%;
+    width: 80%;
+    /* margin-right: .5%; */
+    border: solid;
+      }
+      form button { 
+        color: white;
+        width: 15%;
+        background: rgb(236, 93, 159);
+        border: none;
+        padding: 2%;
+        }
       #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 2% 2%; }
-      #messages li:nth-child(odd) { background: #eee; }
+      .container:nth-child(even) { background: #eee;text-align: right; }
+      
       .nickname{
               position: absolute;
               height: 100%;
@@ -17,31 +28,70 @@
               margin: 0 auto;
       }
       .nickname>input{
-        top: 50%;
+        top: 20%;
         position: relative;
         width: 50%;
         height: 10%;
         outline: none;
         border: none;
         border-bottom: 5px solid;
-        font-size: 2rem;
+        font-size: 4rem;
       }
       #chatroom{
         display:none;
-        padding: 6%;
-        border: 1px solid #ccc;
-        margin: 5%;
-        height: 30rem;
-        overflow-y: scroll;
+        padding: 3%;
+    border: 1px solid #ccc;
+    margin: 5%;
+    height: 77vh;
+    width: 77vw;
 
+      }
+      #status{
+        color: #de5f82;
+    font-size: 1rem;
       }
       .read{
         float: right;
         font-size: xx-small;
       }
-      #sendClass{
-        width: 79vw;
-      }
+      
+      .container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 90%;
+}
+
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.container img {
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.container img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right:0;
+}
+.row{
+  height: 52vh;
+    overflow-y: scroll;
+}
     </style>
   </head>
   <body>
@@ -54,20 +104,23 @@
     text-align: center;
     padding: 2%;
 "><b>Number of people in the chatroom </b>:<span id='totaluser'>0</span></p>
-      <ul id="messages">
-
-      </ul>
+<p id="status">&nbsp;</p>
+<div class="row">
+  
+</div>
       <form action="" id="sendClass">
         <input id="m" autocomplete="off" />
         <button>Send</button>
-        <p id="status"></p>
+        
       </form>
     </main>
     <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
   $(function () {
-    var socket = io();
+    var socket    =   io();
+    var time      =   new Date();
+    var currTime  =   time.getDate()+'/'+time.getMonth()+'/'+time.getFullYear()+' '+time.getHours()+':'+time.getMinutes(); 
     $('form').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', {username:$('#username').val(),msg:$('#m').val()});
@@ -81,7 +134,13 @@
     })
 
     socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').html('<p>'+msg.msg+'</p><p class="read"> <i>send by :</i>'+msg.username+'</p>'));
+      //$('.row').append($('<li>').html('<p>'+msg.msg+'</p><p class="read"> <i>send by :</i>'+msg.username+'</p>'));
+      $('.row').append(`<div class="container darker">
+    <img src="https://source.unsplash.com/random/200x200" alt="Avatar" class="right" style="width:100%;">
+    <p>`+msg.msg+`</p>
+    <span class="time-left">`+msg.username+' '+currTime+`</span>
+  </div>`);  
+
     });
     $('#m').keypress(function(e){
       $('#username').val()!=''&&socket.emit('typing',{username:$('#username').val()})
@@ -91,7 +150,7 @@
     })
     socket.on('typing', function(msg){
       console.log(msg=='')
-      msg.username!=$('#username').val()&&msg!=''?$('#status').text(msg+' is typing....'):$('#status').text('')
+      msg.username!=$('#username').val()&&msg!=''?$('#status').text(msg+' is typing....'):$('#status').html('&nbsp')
     });
     $('#username').keypress(function (e) {
       if (e.which == 13) {
